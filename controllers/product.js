@@ -58,7 +58,7 @@ export const fetchProductTran = (req, res) => {
 
 export const fetchTotalStockValue = (req, res) => {
   const q =
-    "select distinct sum(balance_stock * sale_price) as stockValue, (select count(*)  from accbook.product_module where balance_stock <= low_stock) as lowStockProducts from accbook.product_module;";
+    "select distinct sum(balance_stock * sale_price) as stockValue, (select count(*)  from product_module where balance_stock <= low_stock) as lowStockProducts from product_module;";
   db.query(q, req.params.prodId, (err, data) => {
     if (err) return res.status(500).json(err);
     return res.status(200).json(data);
