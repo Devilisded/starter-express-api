@@ -5,7 +5,8 @@ import {
   addSales,
   fetchSaleTran,
   delSales,
-  fetchSalesPrefixData
+  fetchSalesPrefixData,
+  updateStockQty,
 
 } from "../controllers/sales.js";
 
@@ -18,4 +19,5 @@ router.get("/fetchDataById/:saleId", fetchDataById);
 router.get("/fetchSaleTran/:saleId", fetchSaleTran);
 router.delete("/delSales/:saleId", delSales);
 router.get("/fetchSalesPrefixData", fetchSalesPrefixData);
+router.put("/updateStockQty" , updateStockQty);
 export default router;

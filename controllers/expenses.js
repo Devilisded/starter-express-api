@@ -73,11 +73,12 @@ export const addExpenses = (req, res) => {
   const q =
     "INSERT INTO expenses_module ( `exp_prefix`, `exp_prefix_no` , `exp_date`, `exp_category`, `exp_total`) Values (?)";
   const values = [
-    req.body.exp_prefix,
-    req.body.exp_prefix_no,
+    req.body.prefix_name,
+    req.body.prefix_no,
     req.body.expense_date,
     req.body.category_name,
     req.body.amount_paid,
+    
   ];
   db.query(q, [values], (err, data) => {
     if (err) return res.status(500).json(err);
@@ -122,7 +123,7 @@ export const fetchExpensesData = (req, res) => {
 
 export const fetchExpensesPrefixData = (req, res) => {
   const q =
-    "select distinct exp_prefix , max(exp_prefix_no) as prefix_no from expenses_module group by exp_prefix ORDER By exp_prefix = 'Expenses' DESC ;";
+    "select distinct exp_prefix , max(exp_prefix_no) as prefix_no from accbook.expenses_module group by exp_prefix ORDER By exp_prefix = 'Expenses' DESC ;";
   db.query(q, (err, data) => {
     if (err) return res.status(500).json(err);
     return res.status(200).json(data);
@@ -147,7 +148,7 @@ export const fetchExpensesRightTran = (req, res) => {
 
 export const delexpenses = (req, res) => {
   const q =
-    "DELETE expenses_module.*,expenses_tran.*,cashbook_module.* from expenses_module LEFT JOIN expenses_tran ON expenses_module.exp_id = expenses_tran.cnct_id LEFT JOIN cashbook_module ON expenses_module.exp_id = CAST(cashbook_module.cash_mode as SIGNED) where expenses_module.exp_id = ?;";
+    "DELETE expenses_module.*,expenses_tran.*,cashbook_module.* from expenses_module LEFT JOIN expenses_tran ON expenses_module.exp_id = expenses_tran.cnct_id LEFT JOIN cashbook_module ON expenses_module.exp_id = CAST(cashbook_module.cash_mode as SIGNED) where expenses_module.exp_id = ?;"
   db.query(q, [req.params.expId], (err, data) => {
     if (err) return res.status(500).json(err);
     return res.status(200).json("Deleted SuccessFully");
@@ -155,9 +156,11 @@ export const delexpenses = (req, res) => {
 };
 
 export const fetchExpensesUserAddedItemList = (req, res) => {
-  const q =
-    "SELECT exp_tran_id * 5 + 6  as id , exp_item_name , exp_item_qty , exp_item_price FROM expenses_tran WHERE cnct_id = ? union SELECT id * 15 + 16 , expense_name , qty , price FROM expense_list WHERE expense_name NOT IN (SELECT exp_item_name FROM expenses_tran WHERE cnct_id = ? );";
-  const values = [req.params.cnct_Id1, req.params.cnct_Id2];
+  const q = "SELECT exp_tran_id * 5 + 6 as id , exp_item_name , exp_item_qty , exp_item_price FROM expenses_tran WHERE cnct_id = ? union SELECT id * 15 + 16 , expense_name , qty , price FROM expense_list WHERE expense_name NOT IN (SELECT exp_item_name FROM expenses_tran WHERE cnct_id = ? );"
+  const values = [
+    req.params.cnct_Id1,
+    req.params.cnct_Id2,
+  ];
   db.query(q, values, (err, data) => {
     if (err) return res.status(500).json(err);
     return res.status(200).json(data);
@@ -165,7 +168,7 @@ export const fetchExpensesUserAddedItemList = (req, res) => {
 };
 
 export const DeleteExpensesUserAddedItemList = (req, res) => {
-  const q = "DELETE from expenses_tran where cnct_id = ?";
+  const q = "DELETE from expenses_tran where cnct_id = ?"
   db.query(q, req.params.expId, (err, data) => {
     if (err) return res.status(500).json(err);
     return res.status(200).json(data);
@@ -179,43 +182,41 @@ export const updateExpenses = (req, res) => {
     req.body.exp_total,
     req.params.expId,
   ];
+  console.log(values);
+
+ 
 
   const q =
     "UPDATE expenses_module SET exp_date = ? ,exp_category = ? ,exp_total = ? WHERE exp_id = ?";
-
+  
   db.query(q, values, (err, data) => {
+    console.log(values);
     if (err) return res.status(500).json(err);
     return res.status(200).json("Updated Successfully");
   });
 };
 
-export const UpdateExpensesUserAddedItemList = (req, res) => {
-  const values = [req.body.list];
-  const q =
-    "INSERT INTO expenses_tran ( `cnct_id`, `exp_item_name`, `exp_item_qty`, `exp_item_price`) Values ?";
 
-  const values2 = req.body.list.map((values) => [
-    values.id,
-    values.expense_name,
-    values.qty,
-    values.price,
-  ]);
-  db.query(q, [values2], (err, data) => {
-    if (err) return res.status(500).json(err);
-    return res.status(200).json("Data has been entered");
-  });
-};
-export const updateCash = (req, res) => {
-  const q =
-    "UPDATE cashbook_module SET cash_date = ? , cash_pay = ? , cash_description = ? WHERE cash_mode = ? ";
+export const UpdateExpensesUserAddedItemList = (req, res) => {
+   
+  console.log("req : ", req.body);
   const values = [
-    req.body.exp_date,
-    req.body.exp_total,
-    req.body.exp_category,
-    req.params.cashid,
+    req.body.list,
+    //req.body.expId,
   ];
-  db.query(q, values, (err, data) => {
-    if (err) return res.status(500).json(err);
-    return res.status(200).json("UPDATED SUCCESSFULLY");
-  });
-};
+  console.log("req : ", req.body.list);
+    const q =
+      "INSERT INTO expenses_tran ( `cnct_id`, `exp_item_name`, `exp_item_qty`, `exp_item_price`) Values ?";
+
+    const values2 = req.body.list.map((values) => [
+      values.id,
+      values.expense_name,
+      values.qty,
+      values.price,
+    ]);
+    console.log("values2 :" , values)
+    db.query(q, [values2], (err, data) => {
+      if (err) return res.status(500).json(err);
+      return res.status(200).json("Data has been entered");
+    });
+}

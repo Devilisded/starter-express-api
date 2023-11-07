@@ -14,11 +14,13 @@ import {
   fetchExpensesRightTran,
   fetchExpensesTran,
   delexpenses,
+
+  // edit expenses
   updateExpenses,
   fetchExpensesUserAddedItemList,
   DeleteExpensesUserAddedItemList,
-  UpdateExpensesUserAddedItemList,
-  updateCash,
+  UpdateExpensesUserAddedItemList
+
 } from "../controllers/expenses.js";
 const router = express.Router();
 
@@ -38,19 +40,10 @@ router.get("/fetchExpensesRightTran/:expId", fetchExpensesRightTran);
 router.get("/fetchExpensesTran/:expId", fetchExpensesTran);
 router.delete("/delexpenses/:expId", delexpenses);
 
-router.get(
-  "/fetchExpensesUserAddedItemList/:cnct_Id1/:cnct_Id2",
-  fetchExpensesUserAddedItemList
-);
-router.delete(
-  "/DeleteExpensesUserAddedItemList/:expId",
-  DeleteExpensesUserAddedItemList
-);
-router.put("/updateExpenses/:expId", updateExpenses);
-router.post(
-  "/UpdateExpensesUserAddedItemList",
-  UpdateExpensesUserAddedItemList
-);
-router.put("/updateCash/:cashid", updateCash);
+router.get("/fetchExpensesUserAddedItemList/:cnct_Id1/:cnct_Id2", fetchExpensesUserAddedItemList);
+router.delete("/DeleteExpensesUserAddedItemList/:expId",DeleteExpensesUserAddedItemList);
+router.put("/updateExpenses/:expId",updateExpenses);
+router.post("/UpdateExpensesUserAddedItemList",UpdateExpensesUserAddedItemList)
+
 
 export default router;

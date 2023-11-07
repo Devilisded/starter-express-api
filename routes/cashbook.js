@@ -47,5 +47,5 @@ router.get("/fetchData", fetchData);
 router.get("/fetchDataid/:cashId", fetchDataid);
 router.delete("/deleteData/:cashid", deleteData);
 router.put("/updateData/:cashUP", updateData);
-router.get("/fetchDate/:cashDate", fetchDate);
+router.get("/fetchDate", fetchDate);
 export default router;

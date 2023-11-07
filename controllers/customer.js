@@ -38,6 +38,43 @@ export const fetchData = (req, res) => {
     return res.status(200).json(data);
   });
 };
+// export const sendTran = (req, res) => {
+//   const q =
+//     "INSERT INTO customer_tran(`tran_pay`,`tran_receive`,`tran_description`,`tran_date`,`cnct_id`,`tran_bill`) VALUES(?)";
+//   const values = [
+//     req.body.tran_pay,
+//     req.body.tran_receive,
+//     req.body.tran_description,
+//     req.body.tran_date,
+//     req.body.cnct_id,
+//     req.body.tran_bill
+//   ];
+//   db.query(q, [values], (err, data) => {
+//     if (err) return res.status(500).json(err);
+//     return res.status(200).json("Transaction has been Entered");
+//   });
+// };
+
+// export const sendTran = (req, res) => {
+//   const q =
+//     "INSERT INTO customer_tran(`tran_pay`,`tran_receive`,`tran_description`,`tran_date`, `balance`, `cnct_id`,`tran_bill`) VALUES(?)";
+  
+//     console,log("req.body : " , req.body)
+//   const values = [
+//     req.body.tran_pay,
+//     req.body.tran_receive,
+//     req.body.tran_description,
+//     req.body.tran_date,
+//     req.body.balance,
+//     req.body.cnct_id,
+//     req.body.tran_bill
+//   ];
+//   console.log("values customer js 2" , values)
+//   db.query(q, [values], (err, data) => {
+//     if (err) return res.status(500).json(err);
+//     return res.status(200).json("Transaction has been Entered");
+//   });
+// };
 
 export const fetchTran = (req, res) => {
   const q = "SELECT * from customer_tran where cnct_id = ?";
@@ -56,12 +93,11 @@ export const fetchAll = (req, res) => {
 };
 
 export const fetchLastTran = (req, res) => {
-  const q =
-    "SELECT * from customer_tran where cnct_id = ? ORDER BY tran_id DESC LIMIT 1";
+  const q = "SELECT * from customer_tran where cnct_id = ? ORDER BY tran_id DESC LIMIT 1";
   const values = req.params.cnct_id;
   db.query(q, values, (err, data) => {
-    if (err) return res.status(500).json(err);
-    return res.status(200).json(data);
+      if (err) return res.status(500).json(err);
+      return res.status(200).json(data);
   });
 };
 
