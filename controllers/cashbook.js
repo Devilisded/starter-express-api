@@ -58,12 +58,8 @@ export const updateData = (req, res) => {
 };
 
 export const fetchDate = (req, res) => {
-  console.log(req.params.cashDate)
-  const values = [
-    req.params('cashDate') ];
-  console.log("values : ", values)
   const q = "SELECT * from cashbook_module WHERE cash_date = ? ";
-  db.query(q, [values ], (err, data) => {
+  db.query(q, req.params.cashDate, (err, data) => {
     if (err) return res.status(500).json(err);
     return res.status(200).json(data);
   });
