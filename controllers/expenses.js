@@ -147,7 +147,7 @@ export const fetchExpensesRightTran = (req, res) => {
 
 export const delexpenses = (req, res) => {
   const q =
-    "DELETE expenses_module.*,expenses_tran.*,cashbook_module.* from expenses_module LEFT JOIN expenses_tran ON expenses_module.exp_id = expenses_tran.cnct_id LEFT JOIN cashbook_module ON expenses_module.exp_id = CAST(cashbook_module.cash_mode as int) where expenses_module.exp_id = ?";
+    "DELETE expenses_module.*,expenses_tran.*,cashbook_module.* from expenses_module LEFT JOIN expenses_tran ON expenses_module.exp_id = expenses_tran.cnct_id LEFT JOIN cashbook_module ON expenses_module.exp_id = CAST(cashbook_module.cash_mode as UNSIGNED) where expenses_module.exp_id = ?";
   db.query(q, [req.params.expId], (err, data) => {
     if (err) return res.status(500).json(err);
     return res.status(200).json("Deleted SuccessFully");
