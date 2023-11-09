@@ -156,7 +156,7 @@ export const updateStockQty = (req, res) => {
   let sql = "UPDATE product_module u JOIN (";
   const BATCH_SIZE = 3000;
   for (let i = 0; i < values.length; i += BATCH_SIZE) {
-    console.log("BATCH_SIZE : " ,i)
+    console.log("BATCH_SIZE : ", i);
     let nestedSql = "";
     for (let j = 0; i < BATCH_SIZE; j++) {
       const userData = values[i + j];
@@ -192,9 +192,17 @@ export const fetchSaleTran = (req, res) => {
   });
 };
 
+// export const delSales = (req, res) => {
+//   const q =
+//     "DELETE sale_module.* , sale_tran.* from sale_module LEFT JOIN sale_tran ON sale_module.sale_id = sale_tran.sale_tran_id WHERE sale_id = ?";
+//   db.query(q, [req.params.saleId], (err, data) => {
+//     if (err) return res.status(500).json(err);
+//     return res.status(200).json("DELETED SUCCESSFULLY");
+//   });
+// };
 export const delSales = (req, res) => {
   const q =
-    "DELETE sale_module.* , sale_tran.* from sale_module LEFT JOIN sale_tran ON sale_module.sale_id = sale_tran.sale_tran_id WHERE sale_id = ?";
+    "DELETE sale_module. , sale_tran., cashbook_module. , customer_tran. from sale_module LEFT JOIN sale_tran ON sale_module.sale_id = sale_tran.sale_tran_id LEFT JOIN cashbook_module on sale_module.sale_id = cashbook_module.cash_sale_cnct_id LEFT JOIN customer_tran on sale_module.sale_id = customer_tran.tran_sale_cnct_id  WHERE sale_id = ?";
   db.query(q, [req.params.saleId], (err, data) => {
     if (err) return res.status(500).json(err);
     return res.status(200).json("DELETED SUCCESSFULLY");
