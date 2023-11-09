@@ -122,7 +122,7 @@ export const fetchExpensesData = (req, res) => {
 
 export const fetchExpensesPrefixData = (req, res) => {
   const q =
-    "select distinct exp_prefix , max(exp_prefix_no) as prefix_no from accbook.expenses_module group by exp_prefix ORDER By exp_prefix = 'Expenses' DESC ;";
+    "select distinct exp_prefix , max(exp_prefix_no) as prefix_no from expenses_module group by exp_prefix ORDER By exp_prefix = 'Expenses' DESC ;";
   db.query(q, (err, data) => {
     if (err) return res.status(500).json(err);
     return res.status(200).json(data);
@@ -169,6 +169,21 @@ export const DeleteExpensesUserAddedItemList = (req, res) => {
   db.query(q, req.params.expId, (err, data) => {
     if (err) return res.status(500).json(err);
     return res.status(200).json(data);
+  });
+};
+
+export const updateCash = (req, res) => {
+  const q =
+    "UPDATE cashbook_module SET cash_pay = ?, cash_date = ? ,cash_description = ? WHERE cash_mode = ?";
+  const values = [
+    req.body.exp_total,
+    req.body.exp_date,
+    req.body.exp_category,
+    req.params.expId,
+  ];
+  db.query(q, values, (err, data) => {
+    if (err) return res.status(500).json(err);
+    return res.status(200).json("Updated Successfully");
   });
 };
 

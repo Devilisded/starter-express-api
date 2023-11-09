@@ -19,7 +19,8 @@ import {
   updateExpenses,
   fetchExpensesUserAddedItemList,
   DeleteExpensesUserAddedItemList,
-  UpdateExpensesUserAddedItemList
+  UpdateExpensesUserAddedItemList,
+  updateCash
 
 } from "../controllers/expenses.js";
 const router = express.Router();
@@ -45,5 +46,6 @@ router.delete("/DeleteExpensesUserAddedItemList/:expId",DeleteExpensesUserAddedI
 router.put("/updateExpenses/:expId",updateExpenses);
 router.post("/UpdateExpensesUserAddedItemList",UpdateExpensesUserAddedItemList)
 
+router.put("/updateCash/:expId",updateCash);
 
 export default router;
