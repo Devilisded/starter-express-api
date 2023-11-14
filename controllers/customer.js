@@ -22,11 +22,34 @@ export const sendData = (req, res) => {
       req.body.cust_barea,
       req.body.cust_bpin,
       req.body.cust_bcity,
-      req.body.cust_bstate,
+      req.body.cust_bstate, 
     ];
     db.query(q, [values], (err, data) => {
       if (err) return res.status(500).json(err);
-      return res.status(200).json("Data has been entered");
+      const id = data.insertId;
+      const values2 = [
+        req.body.cust_amt,
+        req.body.cust_date,
+        id
+      ];
+
+      if(req.body.amt_type === 'receive') {
+        
+      const q =
+        "INSERT INTO customer_tran(`tran_receive`,`tran_date`,`cnct_id`) VALUES(?)";
+        db.query(q, [values2], (err, data) => {
+          if (err) return res.status(500).json(err);
+          return res.status(200).json("Data has been entered");
+        });
+      } else {
+        
+        const q =
+        "INSERT INTO customer_tran(`tran_pay`,`tran_date`,`cnct_id`) VALUES(?)";
+        db.query(q, [values2], (err, data) => {
+          if (err) return res.status(500).json(err);
+          return res.status(200).json("Data has been entered");
+        });
+      }
     });
   });
 };
@@ -58,7 +81,7 @@ export const fetchData = (req, res) => {
 // export const sendTran = (req, res) => {
 //   const q =
 //     "INSERT INTO customer_tran(`tran_pay`,`tran_receive`,`tran_description`,`tran_date`, `balance`, `cnct_id`,`tran_bill`) VALUES(?)";
-  
+
 //     console,log("req.body : " , req.body)
 //   const values = [
 //     req.body.tran_pay,
@@ -93,11 +116,12 @@ export const fetchAll = (req, res) => {
 };
 
 export const fetchLastTran = (req, res) => {
-  const q = "SELECT * from customer_tran where cnct_id = ? ORDER BY tran_id DESC LIMIT 1";
+  const q =
+    "SELECT * from customer_tran where cnct_id = ? ORDER BY tran_id DESC LIMIT 1";
   const values = req.params.cnct_id;
   db.query(q, values, (err, data) => {
-      if (err) return res.status(500).json(err);
-      return res.status(200).json(data);
+    if (err) return res.status(500).json(err);
+    return res.status(200).json(data);
   });
 };
 

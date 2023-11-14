@@ -27,7 +27,31 @@ export const sendData = (req, res) => {
 
     db.query(q, [values], (err, data) => {
       if (err) return res.status(500).json(err);
-      return res.status(200).json("Supllier Data has been entered");
+      //return res.status(200).json("Supllier Data has been entered");
+      const id = data.insertId;
+      const values2 = [
+        req.body.sup_amt,
+        req.body.sup_date,
+        id
+      ];
+
+      if(req.body.amt_type === 'receive') {
+        
+      const q =
+        "INSERT INTO supplier_tran(`sup_tran_receive`,`sup_tran_date`,`sup_tran_cnct_id`) VALUES(?)";
+        db.query(q, [values2], (err, data) => {
+          if (err) return res.status(500).json(err);
+          return res.status(200).json("Data has been entered");
+        });
+      } else {
+        
+        const q =
+        "INSERT INTO supplier_tran(`sup_tran_pay`,`sup_tran_date`,`sup_tran_cnct_id`) VALUES(?)";
+        db.query(q, [values2], (err, data) => {
+          if (err) return res.status(500).json(err);
+          return res.status(200).json("Data has been entered");
+        });
+      }
     });
   });
 };
