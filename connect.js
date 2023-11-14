@@ -6,7 +6,7 @@ export const db = createPool({
   user: "uug8rnfkk0zaxelo",
   password: "Youi278d6gKl4rYGcMS3",
   database: "bddf4mrkfuywgigfafoi",
-  connectionLimit: 10,
+  connectionLimit: 5,
 });
 
 // export const db = mysql.createConnection({
