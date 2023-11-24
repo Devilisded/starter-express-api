@@ -9,6 +9,7 @@ import authAccount from "./routes/account.js";
 import authExpenses from "./routes/expenses.js";
 import authSales from "./routes/sales.js";
 import authReports from "./routes/reports.js";
+import authPurchase from "./routes/purchase.js";
 const app = express();
 
 app.use(
@@ -29,6 +30,7 @@ app.use("/api/act", authAccount);
 app.use("/api/exp", authExpenses);
 app.use("/api/sale", authSales);
 app.use("/api/rep", authReports);
+app.use("/api/purchase", authPurchase);
 app.use(express.static("./public"));
 app.listen(8000, () => {
   console.log("App is running ");
