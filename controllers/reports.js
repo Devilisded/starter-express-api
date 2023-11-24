@@ -34,3 +34,12 @@ export const fetchSales = (req, res) => {
     return res.status(200).json(data);
   });
 };
+
+export const fetchPurchase = (req, res) => {
+  const q =
+    "SELECT * from purchase_module WHERE purchase_pay_out_prefix IS NULL";
+  db.query(q, (err, data) => {
+    if (err) return res.status(500).json(err);
+    return res.status(200).json(data);
+  });
+};
