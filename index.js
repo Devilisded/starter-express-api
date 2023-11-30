@@ -10,6 +10,7 @@ import authExpenses from "./routes/expenses.js";
 import authSales from "./routes/sales.js";
 import authReports from "./routes/reports.js";
 import authPurchase from "./routes/purchase.js";
+import { db } from "./connect.js";
 const app = express();
 
 app.use(
@@ -32,6 +33,10 @@ app.use("/api/sale", authSales);
 app.use("/api/rep", authReports);
 app.use("/api/purchase", authPurchase);
 app.use(express.static("./public"));
+db.connect((err) => {
+  if (err) console.log(err);
+  else console.log("Connected");
+});
 app.listen(8000, () => {
   console.log("App is running ");
 });
