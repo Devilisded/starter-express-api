@@ -10,6 +10,7 @@ import authExpenses from "./routes/expenses.js";
 import authSales from "./routes/sales.js";
 import authReports from "./routes/reports.js";
 import authPurchase from "./routes/purchase.js";
+import authLogin from "./routes/auth.js";
 import { db } from "./connect.js";
 const app = express();
 
@@ -32,6 +33,8 @@ app.use("/api/exp", authExpenses);
 app.use("/api/sale", authSales);
 app.use("/api/rep", authReports);
 app.use("/api/purchase", authPurchase);
+app.use("/api/log", authLogin);
+
 app.use(express.static("./public"));
 db.connect((err) => {
   if (err) console.log(err);
